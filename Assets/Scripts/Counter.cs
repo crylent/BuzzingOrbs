@@ -1,21 +1,30 @@
-﻿using UnityEngine;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
+﻿using Enum;
+using UnityEngine;
 
 public class Counter : MonoBehaviour
 {
-    [FormerlySerializedAs("CounterText")] public Text counterText;
+    [SerializeField] private SphereType acceptableType;
 
-    private int _count = 0;
+    private GameManager _gameManager;
 
     private void Start()
     {
-        _count = 0;
+        _gameManager = FindObjectOfType<GameManager>();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        _count += 1;
-        counterText.text = "Count : " + _count;
+        var sphere = other.GetComponent<Sphere>();
+        var coins = sphere.Coins;
+        
+        if (acceptableType == sphere.Type)
+        {
+            _gameManager.Reward(coins, sphere.Type);
+        }
+        else
+        {
+            sphere.Destroy();
+            _gameManager.Penalize(coins, sphere.Type, acceptableType);
+        }
     }
 }

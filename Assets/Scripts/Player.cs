@@ -1,12 +1,12 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 
 public class Player : MonoBehaviour
 {
     [SerializeField] private Camera playerCam;
     [SerializeField] private float movementForce;
+    [SerializeField] private float slowMovementForceFactor = 0.5f;
     [SerializeField] private float camSensitivity = 1;
     [SerializeField] private float holdSphereDistance = 2;
     [SerializeField] private Vector3 holdVector = new(0, 0, 2f);
@@ -26,7 +26,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     private void FixedUpdate()
     {
-        _rigidbody.AddRelativeForce(_movement * movementForce);
+        _rigidbody.AddRelativeForce(movementForce * (_takenSphere ? slowMovementForceFactor : 1) * _movement);
     }
 
     [SerializeField] private float cameraMaxPitch = 40;
@@ -90,7 +90,7 @@ public class Player : MonoBehaviour
             sphereTransform.SetParent(null);
             sphereRigidbody.isKinematic = false;
             sphereRigidbody.AddForce(GetRayFromEyes().direction * 10, ForceMode.Impulse);
-            sphere.GetComponent<Sphere>().MakeFragile();
+            sphereRigidbody.drag = 0;
             _takenSphere = null;
         }
     }
