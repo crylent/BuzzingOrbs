@@ -1,6 +1,8 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -8,8 +10,13 @@ public class Player : MonoBehaviour
     [SerializeField] private float movementForce;
     [SerializeField] private float slowMovementForceFactor = 0.5f;
     [SerializeField] private float camSensitivity = 1;
-    [SerializeField] private float holdSphereDistance = 2;
+    [SerializeField] private float takeSphereDistance = 2;
     [SerializeField] private Vector3 holdVector = new(0, 0, 2f);
+    [SerializeField] private Image forceIndicator;
+    [SerializeField] private float minForce = 5f;
+    [SerializeField] private float maxForce = 100f;
+    [SerializeField] private float maxAccumulationTime = 2;
+    [SerializeField] private float accumulationCurvePow = 2f;
 
     private Rigidbody _rigidbody;
     private Vector3 _movement;
@@ -41,7 +48,7 @@ public class Player : MonoBehaviour
         playerCam.transform.eulerAngles = rot;
 
         var ray = GetRayFromEyes();
-        if (Physics.Raycast(ray, out var hit, holdSphereDistance) && hit.collider.CompareTag("Sphere"))
+        if (Physics.Raycast(ray, out var hit, takeSphereDistance) && hit.collider.CompareTag("Sphere"))
         {
             _activeOutline = hit.collider.gameObject.GetComponent<Outline>();
             _activeOutline.enabled = true;
@@ -67,31 +74,48 @@ public class Player : MonoBehaviour
     }
 
     private GameObject _takenSphere;
+    private float _accumulationTime;
 
     public void OnClick(InputAction.CallbackContext context)
     {
-        if ((!_activeOutline && !_takenSphere) || !context.performed) return;
+        if (!_activeOutline && !_takenSphere) return;
 
         var sphere = _takenSphere ? _takenSphere : _activeOutline.gameObject;
         
         var sphereRigidbody = sphere.GetComponent<Rigidbody>();
         var sphereTransform = sphere.transform;
-        if (!_takenSphere)
+        if (!_takenSphere && context.canceled) // take sphere and attack to player
         {
-            // attach to player
             sphereTransform.SetParent(playerCam.transform);
             sphereTransform.localPosition = holdVector;
             sphereRigidbody.isKinematic = true;
             _takenSphere = sphere;
         }
-        else
+        else if (_takenSphere && context.started) // accumulate force
         {
-            // detach from player and throw
+            StartCoroutine(AccumulateForce());
+        }
+        else if (_takenSphere && context.canceled) // detach sphere from player and throw
+        {
             sphereTransform.SetParent(null);
             sphereRigidbody.isKinematic = false;
-            sphereRigidbody.AddForce(GetRayFromEyes().direction * 10, ForceMode.Impulse);
+            var accumulation = Mathf.Pow(_accumulationTime / maxAccumulationTime, accumulationCurvePow);
+            var force = (maxForce - minForce) * accumulation + minForce;
+            sphereRigidbody.AddForce(GetRayFromEyes().direction * force, ForceMode.Impulse);
             sphereRigidbody.drag = 0;
             _takenSphere = null;
+            forceIndicator.fillAmount = 0;
+        }
+    }
+
+    private IEnumerator AccumulateForce()
+    {
+        _accumulationTime = 0f;
+        while (_accumulationTime < maxAccumulationTime && _takenSphere)
+        {
+            _accumulationTime += Time.fixedDeltaTime;
+            forceIndicator.fillAmount = _accumulationTime / maxAccumulationTime;
+            yield return new WaitForFixedUpdate();
         }
     }
 
