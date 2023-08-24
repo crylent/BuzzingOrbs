@@ -1,10 +1,10 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 using System.ComponentModel;
+using System.Linq;
 using Enum;
 using TMPro;
 using Random = UnityEngine.Random;
@@ -18,7 +18,7 @@ namespace System.Runtime.CompilerServices
 
 public class GameManager : MonoBehaviour
 {
-    [FormerlySerializedAs("spheres")] [SerializeField] private List<GameObject> spheresToSpawn = new();
+    [FormerlySerializedAs("spheres")] [SerializeField] private List<Sphere> spheresToSpawn = new();
     [SerializeField] private Vector3 spawnAreaCenter = new(0, 20, 0);
     [SerializeField] private float spawnAreaRadius = 25;
     [SerializeField] private float doNotSpawnAreaRadius = 9;
@@ -88,7 +88,18 @@ public class GameManager : MonoBehaviour
         var dist = (spawnAreaRadius - doNotSpawnAreaRadius) * Random.value + doNotSpawnAreaRadius;
         var angle = Random.Range(0f, 360f);
         var location = Quaternion.Euler(0, angle, 0) * Vector3.forward * dist + spawnAreaCenter;
-        var sphereToSpawn = spheresToSpawn[Random.Range(0, spheresToSpawn.Count)];
-        Instantiate(sphereToSpawn, location, new Quaternion());
+
+        var factorsSum = spheresToSpawn.Sum(sphere => sphere.ChanceFactor);
+        var rand = Random.value * factorsSum;
+
+        var factorsCounter = 0f;
+        foreach (var sphere in spheresToSpawn)
+        {
+            factorsCounter += sphere.ChanceFactor;
+            if (rand > factorsCounter) continue;
+            
+            Instantiate(sphere.gameObject, location, new Quaternion());
+            break;
+        }
     }
 }

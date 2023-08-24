@@ -168,3 +168,4 @@ MonoBehaviour:
   destroyEffect: {fileID: 4184831820040277120, guid: 1bee58de964145a42bfce895cf98666d, type: 3}
   type: 4
   coins: 20
+  spawnChanceFactor: 0.5

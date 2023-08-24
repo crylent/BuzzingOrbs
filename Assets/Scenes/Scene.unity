@@ -691,7 +691,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 483983986}
-  - component: {fileID: 483983985}
+  - component: {fileID: 483983987}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -699,32 +699,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &483983985
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 483983984}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f384bd7af3322f84bbff35b77475d4eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spheresToSpawn:
-  - {fileID: 1373920514674380550, guid: e0af1b7111b122846a1bfcda4df90dc5, type: 3}
-  - {fileID: 1373920514674380550, guid: fdc345ee06a517242afa86013e7c14d1, type: 3}
-  - {fileID: 1373920514674380550, guid: df76039013cdaca4b8532f7069deeebb, type: 3}
-  - {fileID: 1373920514674380550, guid: cdf7ac16f0c6049449107ba64533a3a1, type: 3}
-  - {fileID: 1373920514674380550, guid: 58779178d5931ad4eb724b8aee8ce6d4, type: 3}
-  - {fileID: 1373920514674380550, guid: 4385524a951b97d4db345c2d7995511b, type: 3}
-  - {fileID: 1373920514674380550, guid: 572650b24adcdd6499b5ec4d017f31ab, type: 3}
-  - {fileID: 1373920514674380550, guid: a88e2a69ae7315a4ca4ce16e5c5fe1e3, type: 3}
-  spawnAreaCenter: {x: 0, y: 20, z: 0}
-  spawnAreaRadius: 25
-  doNotSpawnAreaRadius: 9
-  journal: {fileID: 1991453568}
-  journalEntryLifetime: 5
 --- !u!4 &483983986
 Transform:
   m_ObjectHideFlags: 0
@@ -740,6 +714,36 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &483983987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 483983984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f384bd7af3322f84bbff35b77475d4eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spheresToSpawn:
+  - {fileID: 7207924735932705981, guid: e0af1b7111b122846a1bfcda4df90dc5, type: 3}
+  - {fileID: 7207924735932705981, guid: cdf7ac16f0c6049449107ba64533a3a1, type: 3}
+  - {fileID: 7207924735932705981, guid: df76039013cdaca4b8532f7069deeebb, type: 3}
+  - {fileID: 7207924735932705981, guid: fdc345ee06a517242afa86013e7c14d1, type: 3}
+  - {fileID: 7207924735932705981, guid: e74a1e3b59a9d93439c352da8ad86943, type: 3}
+  - {fileID: 7207924735932705981, guid: e2819c559ea741249b970c6be600c0ff, type: 3}
+  - {fileID: 7207924735932705981, guid: 58779178d5931ad4eb724b8aee8ce6d4, type: 3}
+  - {fileID: 7207924735932705981, guid: a88e2a69ae7315a4ca4ce16e5c5fe1e3, type: 3}
+  - {fileID: 7207924735932705981, guid: 572650b24adcdd6499b5ec4d017f31ab, type: 3}
+  - {fileID: 7207924735932705981, guid: 4385524a951b97d4db345c2d7995511b, type: 3}
+  - {fileID: 7207924735932705981, guid: d3cf4c35cc7c6984b9c2b58842e0d94a, type: 3}
+  - {fileID: 7207924735932705981, guid: 23fb4d2e2560b3f4c8f5c083c1936e23, type: 3}
+  spawnAreaCenter: {x: 0, y: 20, z: 0}
+  spawnAreaRadius: 25
+  doNotSpawnAreaRadius: 9
+  journal: {fileID: 1991453568}
+  journalEntryLifetime: 5
 --- !u!1001 &508048959
 PrefabInstance:
   m_ObjectHideFlags: 0

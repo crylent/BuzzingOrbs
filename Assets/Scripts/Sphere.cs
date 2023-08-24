@@ -8,6 +8,8 @@ public class Sphere : MonoBehaviour
     public SphereType Type => type;
     [SerializeField] private int coins = 10;
     public int Coins => coins;
+    [SerializeField] private float spawnChanceFactor = 1f;
+    public float ChanceFactor => spawnChanceFactor;
 
     private ParticlesGarbageCollector _collector;
 
