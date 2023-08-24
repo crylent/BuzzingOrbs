@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float accumulationCurvePow = 2f;
 
     private Rigidbody _rigidbody;
+    private AudioSource _steps;
     private Vector3 _movement;
     private float _deltaX;
     private float _deltaY;
@@ -28,6 +29,7 @@ public class Player : MonoBehaviour
     private void Start()
     {
         _rigidbody = GetComponent<Rigidbody>();
+        _steps = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -64,6 +66,15 @@ public class Player : MonoBehaviour
     {
         var movement = context.ReadValue<Vector2>().normalized;
         _movement = new Vector3(movement.x, 0, movement.y);
+
+        if (context.started)
+        {
+            _steps.Play();
+        }
+        else if (context.canceled)
+        {
+            _steps.Stop();
+        }
     }
 
     public void OnLook(InputAction.CallbackContext context)
@@ -90,6 +101,7 @@ public class Player : MonoBehaviour
             sphereTransform.localPosition = holdVector;
             sphereRigidbody.isKinematic = true;
             _takenSphere = sphere;
+            _steps.pitch = 0.75f;
         }
         else if (_takenSphere && context.started) // accumulate force
         {
@@ -105,6 +117,7 @@ public class Player : MonoBehaviour
             sphereRigidbody.drag = 0;
             _takenSphere = null;
             forceIndicator.fillAmount = 0;
+            _steps.pitch = 1f;
         }
     }
 

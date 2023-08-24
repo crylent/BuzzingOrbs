@@ -1,4 +1,5 @@
-﻿using Enum;
+﻿using System;
+using Enum;
 using UnityEngine;
 
 public class Counter : MonoBehaviour
@@ -19,6 +20,7 @@ public class Counter : MonoBehaviour
         
         if (acceptableType == sphere.Type)
         {
+            sphere.DisableSound();
             _gameManager.Reward(coins, sphere.Type);
         }
         else

@@ -12,10 +12,12 @@ public class Sphere : MonoBehaviour
     public float ChanceFactor => spawnChanceFactor;
 
     private ParticlesGarbageCollector _collector;
+    private AudioSource _audio;
 
     private void Start()
     {
         _collector = FindObjectOfType<ParticlesGarbageCollector>();
+        _audio = GetComponent<AudioSource>();
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -32,5 +34,10 @@ public class Sphere : MonoBehaviour
         var system = Instantiate(destroyEffect, transform.position, new Quaternion());
         _collector.RegisterSystem(system);
         Destroy(gameObject);
+    }
+
+    public void DisableSound()
+    {
+        _audio.enabled = false;
     }
 }

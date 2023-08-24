@@ -22,17 +22,23 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Vector3 spawnAreaCenter = new(0, 20, 0);
     [SerializeField] private float spawnAreaRadius = 25;
     [SerializeField] private float doNotSpawnAreaRadius = 9;
+
+    [SerializeField] private float spawnPeriod = 5f;
     
     [SerializeField] private TextMeshProUGUI journal;
     [SerializeField] private float journalEntryLifetime = 5;
 
+    [SerializeField] private List<AudioClip> successSounds = new();
+
     private int _coins;
     private readonly List<JournalEntry> _journal = new();
+    private AudioSource _audio;
     
     // Start is called before the first frame update
     private void Start()
     {
         _coins = 0;
+        _audio = GetComponent<AudioSource>();
         StartCoroutine(ScheduleSpawn());
     }
 
@@ -41,13 +47,14 @@ public class GameManager : MonoBehaviour
         while (true)
         {
             SpawnSphere();
-            yield return new WaitForSeconds(5);
+            yield return new WaitForSeconds(spawnPeriod);
         }
     }
 
     public void Reward(int coins, SphereType color)
     {
         _coins += coins;
+        _audio.PlayOneShot(successSounds[Random.Range(0, successSounds.Count)]);
         StartCoroutine(AddEntryToJournal(JournalEntryType.Reward, color, color, coins));
     }
 
