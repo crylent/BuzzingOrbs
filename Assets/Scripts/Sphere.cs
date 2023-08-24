@@ -1,3 +1,4 @@
+using System.Collections;
 using Enum;
 using UnityEngine;
 
@@ -11,13 +12,16 @@ public class Sphere : MonoBehaviour
     [SerializeField] private float spawnChanceFactor = 1f;
     public float ChanceFactor => spawnChanceFactor;
 
+    private GameManager _gameManager;
     private ParticlesGarbageCollector _collector;
     private AudioSource _audio;
 
     private void Start()
     {
+        _gameManager = FindObjectOfType<GameManager>();
         _collector = FindObjectOfType<ParticlesGarbageCollector>();
         _audio = GetComponent<AudioSource>();
+        StartCoroutine(DestroyOnGameFinished());
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -27,6 +31,12 @@ public class Sphere : MonoBehaviour
         {
             Destroy(); // destroy sphere with particle effect
         }
+    }
+
+    private IEnumerator DestroyOnGameFinished()
+    {
+        yield return new WaitUntil(() => !_gameManager.IsGameActive);
+        Destroy();
     }
 
     public void Destroy()

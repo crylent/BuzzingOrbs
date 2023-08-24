@@ -5,6 +5,7 @@ using UnityEngine;
 public class Counter : MonoBehaviour
 {
     [SerializeField] private SphereType acceptableType;
+    [SerializeField] private int penalty = 10;
 
     private GameManager _gameManager;
 
@@ -26,7 +27,7 @@ public class Counter : MonoBehaviour
         else
         {
             sphere.Destroy();
-            _gameManager.Penalize(coins, sphere.Type, acceptableType);
+            _gameManager.Penalize(penalty, sphere.Type, acceptableType);
         }
     }
 }

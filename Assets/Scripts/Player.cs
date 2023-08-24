@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float maxAccumulationTime = 2;
     [SerializeField] private float accumulationCurvePow = 2f;
 
+    private GameManager _gameManager;
     private Rigidbody _rigidbody;
     private AudioSource _steps;
     private Vector3 _movement;
@@ -28,6 +29,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
+        _gameManager = FindObjectOfType<GameManager>();
         _rigidbody = GetComponent<Rigidbody>();
         _steps = GetComponent<AudioSource>();
     }
@@ -35,6 +37,8 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     private void FixedUpdate()
     {
+        if (!_gameManager.IsGameActive) return;
+
         _rigidbody.AddRelativeForce(movementForce * (_takenSphere ? slowMovementForceFactor : 1) * _movement);
     }
 
@@ -43,6 +47,8 @@ public class Player : MonoBehaviour
     
     private void LateUpdate()
     {
+        if (!_gameManager.IsGameActive) return;
+        
         transform.Rotate(0, _deltaX * camSensitivity, 0);
         var rot = playerCam.transform.eulerAngles;
         if (rot.x > 180) rot.x -= 360;
@@ -64,6 +70,13 @@ public class Player : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext context)
     {
+        if (!_gameManager.IsGameActive)
+        {
+            _movement = Vector3.zero;
+            _steps.Stop();
+            return;
+        }
+
         var movement = context.ReadValue<Vector2>().normalized;
         _movement = new Vector3(movement.x, 0, movement.y);
 
@@ -79,6 +92,8 @@ public class Player : MonoBehaviour
 
     public void OnLook(InputAction.CallbackContext context)
     {
+        if (!_gameManager.IsGameActive) return;
+
         var delta = context.ReadValue<Vector2>();
         _deltaX = delta.x;
         _deltaY = -delta.y;
@@ -89,6 +104,8 @@ public class Player : MonoBehaviour
 
     public void OnClick(InputAction.CallbackContext context)
     {
+        if (!_gameManager.IsGameActive) return;
+
         if (!_activeOutline && !_takenSphere) return;
 
         var sphere = _takenSphere ? _takenSphere : _activeOutline.gameObject;
