@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float journalEntryLifetime = 5;
 
     [SerializeField] private List<AudioClip> successSounds = new();
+    [SerializeField] private Lamp lamp;
 
     private int _coins;
     private readonly List<JournalEntry> _journal = new();
@@ -55,6 +56,7 @@ public class GameManager : MonoBehaviour
     {
         _coins += coins;
         _audio.PlayOneShot(successSounds[Random.Range(0, successSounds.Count)]);
+        StartCoroutine(lamp.Flash(color));
         StartCoroutine(AddEntryToJournal(JournalEntryType.Reward, color, color, coins));
     }
 
