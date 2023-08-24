@@ -38,6 +38,9 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private GameObject menu;
     [SerializeField] private TextMeshProUGUI info;
+
+    [SerializeField] private AudioClip endGameSound;
+    [SerializeField] private AudioClip newRecordSound;
     
     [SerializeField] private GameObject hud;
     [SerializeField] private TextMeshProUGUI timer;
@@ -104,7 +107,12 @@ public class GameManager : MonoBehaviour
         menu.SetActive(true);
         if (_coins > _coinsRecord)
         {
+            _audio.PlayOneShot(newRecordSound);
             _coinsRecord = _coins;
+        }
+        else
+        {
+            _audio.PlayOneShot(endGameSound);
         }
         
         info.SetText($"Last Result:  {_coins} coins\nRecord: {_coinsRecord} coins");
