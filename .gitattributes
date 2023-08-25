@@ -5,7 +5,9 @@ Packages/* linguist-vendored
 ProjectSettings/* linguist-vendored
 
 *.asset linguist-vendored
+*.cginc linguist-vendored
 *.mat linguist-vendored
 *.meta linguist-vendored
 *.prefab linguist-vendored
+*.shader linguist-vendored
 *.unity linguist-vendored
