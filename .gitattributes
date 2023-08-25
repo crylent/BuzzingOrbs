@@ -6,3 +6,4 @@ ProjectSettings/* linguist-vendored
 
 *.asset linguist-vendored
 *.meta linguist-vendored
+*.prefab linguist-vendored
