@@ -1,0 +1,7 @@
+.idea/* linguist-vendored
+Assets/QuickOutline/* linguist-vendored
+Assets/TextMesh?Pro/* linguist-vendored
+Packages/* linguist-vendored
+ProjectSettings/* linguist-vendored
+
+*.meta linguist-vendored
