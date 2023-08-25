@@ -8,3 +8,4 @@ ProjectSettings/* linguist-vendored
 *.mat linguist-vendored
 *.meta linguist-vendored
 *.prefab linguist-vendored
+*.unity linguist-vendored
